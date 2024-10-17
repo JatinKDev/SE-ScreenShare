@@ -17,9 +17,7 @@ using System.Windows.Shapes;
 
 namespace ScreenShare
 {
-    /// <summary>
-    /// Interaction logic for ScreenShareClient.xaml
-    /// </summary>
+    // Interaction logic for ScreenShareClient.xaml
     public partial class ScreenShareClient : Page
     {
         public ScreenShareClient()
@@ -29,12 +27,9 @@ namespace ScreenShare
             this.DataContext = viewModel;
         }
 
-        /// <summary>
-        /// This function is triggered when the user clicks on the Stop Screen Share Button 
-        /// It sets the value of SharingScreen boolean to false as screen is not being shared 
-        /// </summary>
-        /// <param name="sender"> default </param>
-        /// <param name="e"> default </param>
+        // This function is triggered when the user clicks on the Stop Screen Share Button 
+        // It sets the value of SharingScreen boolean to false as screen is not being shared 
+      
         public void OnStopButtonClicked(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is ScreenshareClientViewModel viewModel)
@@ -45,12 +40,10 @@ namespace ScreenShare
             Trace.WriteLine(Utils.GetDebugMessage("Stop Share Button Clicked", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// This function is triggered when the user clicks on the Start Screen Share Button 
-        /// It sets the value of SharingScreen boolean to true as screen is being shared 
-        /// </summary>
-        /// <param name="sender"> default </param>
-        /// <param name="e"> default </param>
+       
+        // This function is triggered when the user clicks on the Start Screen Share Button 
+        // It sets the value of SharingScreen boolean to true as screen is being shared 
+        
         public void OnStartButtonClicked(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is ScreenshareClientViewModel viewModel)

@@ -1,39 +1,37 @@
-﻿/// <summary>
-/// Defines the enum "ClientDataHeader", which enumerates all the headers
-/// that could be present in the data packet sent by the client.
-/// </summary>
+﻿// Defines the enum "ClientDataHeader", which enumerates all the headers
+// that could be present in the data packet sent by the client.
 
 using System.Runtime.Serialization;
 
 namespace ScreenShare
 {
-    /// <summary>
-    /// Enumerates all the headers that could be present in the data packet
-    /// sent by the client.
-    /// </summary>
+
+    // Enumerates all the headers that could be present in the data packet
+    // sent by the client.
+    
     public enum ClientDataHeader
     {
-        /// <summary>
-        /// Register a client for screen sharing.
-        /// </summary>
+         
+        // Register a client for screen sharing.
+      
         [EnumMember(Value = "REGISTER")]
         Register,
 
-        /// <summary>
-        /// De-register a client for screen sharing.
-        /// </summary>
+       
+        // De-register a client for screen sharing.
+       
         [EnumMember(Value = "DEREGISTER")]
         Deregister,
 
-        /// <summary>
-        /// Image received from the client.
-        /// </summary>
+        
+        // Image received from the client.
+      
         [EnumMember(Value = "IMAGE")]
         Image,
 
-        /// <summary>
-        /// Confirmation packet received from the client.
-        /// </summary>
+      
+        // Confirmation packet received from the client.
+      
         [EnumMember(Value = "CONFIRMATION")]
         Confirmation
     }

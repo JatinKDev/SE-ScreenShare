@@ -1,0 +1,142 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\screenshareserver.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\screenshareserver.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\screenshareclient.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\screenshareclient.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\screenshareclient.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\screenshareclient.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\serverdataheader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\serverdataheader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\datapacket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\datapacket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|c:\\users\\hp\\desktop\\se-screenshare\\source\\repos\\screenshare\\screenshare\\clientdataheader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88DE4F3D-56DC-4178-AC98-72EFCE979C0C}|ScreenShare\\ScreenShare.csproj|solutionrelative:screenshare\\clientdataheader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ScreenShareServer.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareServer.xaml.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\ScreenShareServer.xaml.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareServer.xaml.cs",
+              "RelativeToolTip": "ScreenShare\\ScreenShareServer.xaml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFIAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T07:04:55.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ScreenShareClient.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareClient.xaml.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\ScreenShareClient.xaml.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareClient.xaml.cs",
+              "RelativeToolTip": "ScreenShare\\ScreenShareClient.xaml.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAowCwAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T07:04:05.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ScreenShareClient.xaml",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareClient.xaml",
+              "RelativeDocumentMoniker": "ScreenShare\\ScreenShareClient.xaml",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShareClient.xaml",
+              "RelativeToolTip": "ScreenShare\\ScreenShareClient.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-10-17T07:03:51.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Utils.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\Utils.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\Utils.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\Utils.cs",
+              "RelativeToolTip": "ScreenShare\\Utils.cs",
+              "ViewState": "AQIAAC8AAAAAAAAAAAAuwGcAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T07:02:23.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ServerDataHeader.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ServerDataHeader.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\ServerDataHeader.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ServerDataHeader.cs",
+              "RelativeToolTip": "ScreenShare\\ServerDataHeader.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T07:01:42.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DataPacket.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\DataPacket.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\DataPacket.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\DataPacket.cs",
+              "RelativeToolTip": "ScreenShare\\DataPacket.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T06:59:56.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ClientDataHeader.cs",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ClientDataHeader.cs",
+              "RelativeDocumentMoniker": "ScreenShare\\ClientDataHeader.cs",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ClientDataHeader.cs",
+              "RelativeToolTip": "ScreenShare\\ClientDataHeader.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACEAAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T06:54:52.321Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

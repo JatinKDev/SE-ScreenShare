@@ -10,9 +10,9 @@ using System.Windows.Media.Imaging;
 
 namespace ScreenShare
 {
-    ///  
-    /// struct for storing the resolution of a image
-    ///   
+      
+    // struct for storing the resolution of a image
+       
     public struct Resolution
     {
         public int Height { get; set; }
@@ -23,19 +23,18 @@ namespace ScreenShare
         public static bool operator !=(Resolution lhs, Resolution rhs) => !(lhs == rhs);
     }
 
-    ///  
-    /// Defines various general utilities.
-    ///   
+      
+    // Defines various general utilities.
+       
     public static class Utils
     {
-        ///  
-        /// The string representing the module identifier for screen share.
-        ///   
+          
+        // The string representing the module identifier for screen share.
+        
         public const string ModuleIdentifier = "ScreenShare";
 
-        ///  
-        /// Printing debug message
-        /// </returns>
+        // Printing debug message
+         
         public static string GetDebugMessage(string message, bool withTimeStamp = false)
         {
             // Get the class name and the name of the caller function
@@ -48,15 +47,10 @@ namespace ScreenShare
             return $"{prefix}[{className}::{methodName}] : {message}";
         }
 
-        ///  
-        /// Convert an object of "Bitmap" to an object of type "BitmapSource"
-        ///   
-        /// <param name="bitmap">
-        /// The object to convert to "BitmapSource"
-        /// </param>
-        /// <returns>
-        /// The converted "BitmapSource" object
-        /// </returns>
+         
+        // Convert an object of "Bitmap" to an object of type "BitmapSource"
+           
+        
         public static BitmapSource BitmapToBitmapSource(this Bitmap bitmap)
         {
             // Create new memory stream to temporarily save the bitmap there
@@ -78,15 +72,9 @@ namespace ScreenShare
             return result;
         }
 
-        ///  
-        /// Convert an object to type "BitmapSource" to an object of type "BitmapImage"
-        ///   
-        /// <param name="bitmapSource">
-        /// The object to convert to "BitmapImage"
-        /// </param>
-        /// <returns>
-        /// The converted "BitmapImage" object
-        /// </returns>
+        
+        // Convert an object to type "BitmapSource" to an object of type "BitmapImage"
+           
         public static BitmapImage BitmapSourceToBitmapImage(BitmapSource bitmapSource)
         {
             // Check if BitmapSource is already a BitmapImage
@@ -113,15 +101,8 @@ namespace ScreenShare
             return bitmapImage;
         }
 
-        /// Convert an object of "Bitmap" to an object of "BitmapImage"
-        ///   
-        /// <param name="bitmap">
-        /// The object to convert to "BitmapImage"
-        /// </param>
-        /// <returns>
-        /// The converted "BitmapImage" object
-        /// </returns>
-        /// 
+        // Convert an object of "Bitmap" to an object of "BitmapImage"
+        
         public static BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
             return BitmapSourceToBitmapImage(BitmapToBitmapSource(bitmap));

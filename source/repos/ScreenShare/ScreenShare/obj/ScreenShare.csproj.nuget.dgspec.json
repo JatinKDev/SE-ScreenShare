@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hp\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj": {}
+    "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hp\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj": {
+    "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hp\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj",
+        "projectUniqueName": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj",
         "projectName": "ScreenShare",
-        "projectPath": "C:\\Users\\hp\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj",
+        "projectPath": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\ScreenShare.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hp\\source\\repos\\ScreenShare\\ScreenShare\\obj\\",
+        "outputPath": "C:\\Users\\hp\\Desktop\\SE-ScreenShare\\source\\repos\\ScreenShare\\ScreenShare\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
