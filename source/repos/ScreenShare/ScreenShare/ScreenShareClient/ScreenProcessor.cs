@@ -1,10 +1,4 @@
-﻿///<summary>
-/// This file has ScreenProcessor class. It is responsible for 
-/// processing the image from ScreenCapturer class and calculating
-/// the image bits that are different from the previous image
-///</summary>
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -16,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ScreenShare.Client
 {
-    /// <summary>
-    /// Class contains implementation of the screen processing using threads (tasks)
-    /// </summary>
+     
+    // Class contains implementation of the screen processing using threads (tasks)
+     
     public class ScreenProcessor
     {
         // The queue in which the image will be enqueued after
@@ -52,10 +46,10 @@ namespace ScreenShare.Client
         // Stores whether diff image is being sent for the first time or not
         private int _first_xor = 0;
 
-        /// <summary>
-        /// Called by ScreenshareClient.
-        /// Initializes queue, oldRes, newRes, cancellation token and the previous image.
-        /// </summary>
+         
+        // Called by ScreenshareClient.
+        // Initializes queue, oldRes, newRes, cancellation token and the previous image.
+         
         public ScreenProcessor(ScreenCapturer Capturer)
         {
             _capturer = Capturer;
@@ -65,10 +59,10 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage("Successfully created an instance of ScreenProcessor", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Pops and return the image from the queue. If there is no image in the queue then it waits for 
-        /// the queue to become not empty
-        /// </summary>
+         
+        // Pops and return the image from the queue. If there is no image in the queue then it waits for 
+        // the queue to become not empty
+         
         public string GetFrame(ref bool cancellationToken)
         {
             while (true)
@@ -92,9 +86,9 @@ namespace ScreenShare.Client
             }
         }
 
-        /// <summary>
-        /// Returns the length of the processed image queue 
-        /// </summary>
+         
+        // Returns the length of the processed image queue 
+         
         public int GetProcessedFrameLength()
         {
             lock (_processedFrame)
@@ -104,8 +98,8 @@ namespace ScreenShare.Client
             }
         }
 
-        /// In this function we go through every pixel of both the images and
-        /// returns a bitmap image which has xor of all the coorosponding pixels
+        // In this function we go through every pixel of both the images and
+        // returns a bitmap image which has xor of all the coorosponding pixels
         public static unsafe Bitmap? Process(Bitmap curr, Bitmap prev)
         {
             // taking lock on the images and extracting bitmap data
@@ -174,10 +168,10 @@ namespace ScreenShare.Client
             return newb;
         }
 
-        /// <summary>
-        /// Main function which will run in loop and capture the image
-        /// calculate the image bits differences and append it in the array
-        /// </summary>
+         
+        // Main function which will run in loop and capture the image
+        // calculate the image bits differences and append it in the array
+         
         private void Processing()
         {
             while (!_cancellationToken)
@@ -206,10 +200,10 @@ namespace ScreenShare.Client
             }
         }
 
-        /// <summary>
-        /// Called by ScreenshareClient when the client starts screen sharing.
-        /// Creates a task for the Processing function.
-        /// </summary>
+         
+        // Called by ScreenshareClient when the client starts screen sharing.
+        // Creates a task for the Processing function.
+         
         public void StartProcessing()
         {
             // dropping one frame to set the previous image value
@@ -252,11 +246,11 @@ namespace ScreenShare.Client
             }
         }
 
-        /// <summary>
-        /// Called by ScreenshareClient when the client stops screen sharing
-        /// kill the processor task and make the processor task variable null
-        /// Empty the Queue.
-        /// </summary>
+         
+        // Called by ScreenshareClient when the client stops screen sharing
+        // kill the processor task and make the processor task variable null
+        // Empty the Queue.
+         
         public void StopProcessing()
         {
             Debug.Assert(_processorTask != null, Utils.GetDebugMessage("_processorTask was null, cannot call cancel."));
@@ -277,10 +271,9 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage("Successfully stopped image processing", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Setting new resolution for sending the image. 
-        /// </summary>
-        /// <param name="res"> New resolution values </param>
+         
+        // Setting new resolution for sending the image. 
+         
         public void SetNewResolution(int windowCount)
         {
             Debug.Assert(windowCount != 0, Utils.GetDebugMessage("windowCount is found 0"));
@@ -299,12 +292,10 @@ namespace ScreenShare.Client
                 " variable", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Compressing the image byte array data using Deflated stream. It provides
-        /// a lossless compression.
-        /// </summary>
-        /// <param name="data">Image data to be compressed</param>
-        /// <returns>Compressed data</returns>
+         
+        // Compressing the image byte array data using Deflated stream. It provides
+        // a lossless compression.
+        
         public static byte[] CompressByteArray(byte[] data)
         {
             MemoryStream output = new();
@@ -315,10 +306,10 @@ namespace ScreenShare.Client
             return output.ToArray();
         }
 
-        /// <summary>
-        /// Called by StartProcessing, if the image resolution has changed then set
-        /// the new image resolution
-        /// </summary>
+         
+        // Called by StartProcessing, if the image resolution has changed then set
+        // the new image resolution
+         
         public string Compress(Bitmap img)
         {
             Bitmap? new_img = null;

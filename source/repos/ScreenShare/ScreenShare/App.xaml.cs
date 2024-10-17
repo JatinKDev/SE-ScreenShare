@@ -4,9 +4,9 @@ using System.Windows;
 
 namespace ScreenShare
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+     
+    // Interaction logic for App.xaml
+     
     public partial class App : Application
     {
     }

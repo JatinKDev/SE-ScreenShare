@@ -1,8 +1,8 @@
-﻿/// <summary>
-/// This file has ScreenshareClient class's partial implementation
-/// In this file functions realted to stopping of ScreenCapturing 
-/// are implemented
-/// </summary>
+﻿ 
+// This file has ScreenshareClient class's partial implementation
+// In this file functions realted to stopping of ScreenCapturing 
+// are implemented
+ 
 
 using Networking;
 using System;
@@ -16,10 +16,10 @@ namespace ScreenShare.Client
     public partial class ScreenshareClient : INotificationHandler
     {
 
-        /// <summary>
-        /// Method to stop screensharing. Calling this will stop sending both the image sending
-        /// task and confirmation sending task. It will also call stop on the processor and capturer.
-        /// </summary>
+         
+        // Method to stop screensharing. Calling this will stop sending both the image sending
+        // task and confirmation sending task. It will also call stop on the processor and capturer.
+         
         public void StopScreensharing()
         {
             Debug.Assert(_id != null, Utils.GetDebugMessage("_id property found null", withTimeStamp: true));
@@ -35,10 +35,10 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage("Successfully sent DEREGISTER packet to server", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Method to stop sending confirmation packets. Will be called only when the client
-        /// stops screensharing.
-        /// </summary>
+         
+        // Method to stop sending confirmation packets. Will be called only when the client
+        // stops screensharing.
+         
         private void StopConfirmationSending()
         {
             if (_sendConfirmationTask == null)
@@ -59,10 +59,10 @@ namespace ScreenShare.Client
             _sendConfirmationTask = null;
         }
 
-        /// <summary>
-        /// Method to stop image sending. Will be called whenever the screenshare is stopped by
-        /// the client or the client is not on the displayed screen of the server.
-        /// </summary>
+         
+        // Method to stop image sending. Will be called whenever the screenshare is stopped by
+        // the client or the client is not on the displayed screen of the server.
+         
         private void StopImageSending()
         {
             if (_sendImageTask == null)
@@ -90,13 +90,13 @@ namespace ScreenShare.Client
             _sendImageTask = null;
         }
 
-        /// <summary>
-        /// Sends confirmation packet to server once every five seconds. The confirmation packet
-        /// does not contain any data. The confirmation packets are always sent once the client
-        /// has started screen share. In case the network gets disconnected, these packtes will
-        /// stop reaching the server, as a result of which the server will remove the client
-        /// as a 'screen sharer'.
-        /// </summary>
+         
+        // Sends confirmation packet to server once every five seconds. The confirmation packet
+        // does not contain any data. The confirmation packets are always sent once the client
+        // has started screen share. In case the network gets disconnected, these packtes will
+        // stop reaching the server, as a result of which the server will remove the client
+        // as a 'screen sharer'.
+         
         private void SendConfirmationPacket()
         {
             _confirmationCancellationToken = false;
@@ -118,11 +118,8 @@ namespace ScreenShare.Client
             _sendConfirmationTask.Start();
         }
 
-        /// <summary>
-        /// Used by dashboard module to set the id and name for the client
-        /// </summary>
-        /// <param name="id">ID of the client</param>
-        /// <param name="name">Name of the client</param>
+         
+        // Used by dashboard module to set the id and name for the client
         public void SetUser(string id, string name)
         {
             _id = id;

@@ -1,7 +1,4 @@
-﻿///<summary> This file contains the Screenshot Class that implements the screenshot functionality. ///</summary>///<reference> https://github.com/0x2E757/ScreenCapturer ///</reference>
-///<reference> https://github.com/sharpdx/SharpDX-Samples/blob/master/Desktop/Direct3D11.1/ScreenCapture/Program.cs ///</reference>
-
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System;
@@ -17,9 +14,9 @@ using System.DirectoryServices.ActiveDirectory;
 using System.Windows.Media;
 namespace ScreenShare.Client
 {
-    /// <summary>
-    /// Class contains the necessary functions for taking the screenshot of the current screen.
-    /// </summary>
+     
+    // Class contains the necessary functions for taking the screenshot of the current screen.
+     
     public class Screenshot
     {
         private static readonly object _lock = new();
@@ -60,13 +57,9 @@ namespace ScreenShare.Client
             }
         }
 
-        /// <summary>
-        /// Core function of class for taking the screenshot. Uses SharpDX for faster image capture.
-        /// </summary>
-        /// <param name="displayIndex">Index for the display which is to be captured. Defaults to 0 (Primary Display)</param>
-        /// <param name="adapterIndex">Index for the display card to be used. Defaults to 0 (Primary graphics card)</param>
-        /// <param name="maxTimeout">Timeout to get duplicated frame</param>
-        /// <returns>The bitmap image for the screenshot</returns>
+         
+        // Core function of class for taking the screenshot. Uses SharpDX for faster image capture.
+       
         public Bitmap MakeScreenshot(Int32 displayIndex = 0, Int32 adapterIndex = 0, Int32 maxTimeout = 5000)
         {
             InitializeVariables(displayIndex, adapterIndex);
@@ -98,12 +91,9 @@ namespace ScreenShare.Client
             return SmallBitmap;
         }
 
-        /// <summary>
-        /// Initializes the members of the class.
-        /// </summary>
-        /// <param name="displayIndex">Index for the display which is to be captured. Defaults to 0 (Primary Display)</param>
-        /// <param name="adapterIndex">Index for the display card to be used. Defaults to 0 (Primary graphics card)</param>
-        /// <param name="forcedInitialization"></param>
+         
+        // Initializes the members of the class.
+         
         private void InitializeVariables(Int32 displayIndex, Int32 adapterIndex, Boolean forcedInitialization = false)
         {
             Boolean displayIndexChanged = MakeScreenshot_LastDisplayIndexValue != displayIndex;
@@ -144,9 +134,9 @@ namespace ScreenShare.Client
             }
         }
 
-        /// <summary>
-        /// Disposes the class memebers to avoid memory hogging.
-        /// </summary>
+         
+        // Disposes the class memebers to avoid memory hogging.
+         
         public void DisposeVariables()
         {
             _bitmap?.Dispose();

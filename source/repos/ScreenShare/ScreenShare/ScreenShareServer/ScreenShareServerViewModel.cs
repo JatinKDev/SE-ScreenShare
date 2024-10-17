@@ -1,7 +1,7 @@
-﻿/// <summary>
-/// Defines the "ScreenshareServerViewModel" class which represents the
-/// view model for screen sharing on the server side machine.
-/// </summary>
+﻿ 
+// Defines the "ScreenshareServerViewModel" class which represents the
+// view model for screen sharing on the server side machine.
+ 
 
 using System;
 using System.Collections.Generic;
@@ -18,92 +18,85 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ScreenShare.Server
 {
-    /// <summary>
-    /// Represents the view model for screen sharing on the server side machine.
-    /// </summary>
+     
+    // Represents the view model for screen sharing on the server side machine.
+     
     public class ScreenshareServerViewModel :
         INotifyPropertyChanged, // Notifies the UX that a property value has changed.
         IMessageListener,       // Notifies the UX that subscribers list has been updated.
         IDisposable             // Handle cleanup work for the allocated resources.
     {
-        /// <summary>
-        /// The only singleton instance for this class.
-        /// </summary>
+         
+        // The only singleton instance for this class.
+         
         private static ScreenshareServerViewModel? _instance;
 
-        /// <summary>
-        /// Underlying data model.
-        /// </summary>
+         
+        // Underlying data model.
+         
         private readonly ScreenshareServer? _model;
 
-        /// <summary>
-        /// List of all the clients sharing their screens. This list first contains
-        /// the clients which are marked as pinned and then the rest of the clients
-        /// in lexicographical order of their name.
-        /// </summary>
+         
+        // List of all the clients sharing their screens. This list first contains
+        // the clients which are marked as pinned and then the rest of the clients
+        // in lexicographical order of their name.
+         
         private List<SharedClientScreen> _subscribers;
 
-        /// <summary>
-        /// Track whether Dispose has been called.
-        /// </summary>
+         
+        // Track whether Dispose has been called.
+         
         private bool _disposed;
 
-        /// <summary>
-        /// The clients which are on the current page.
-        /// </summary>
+         
+        // The clients which are on the current page.
+         
         private readonly ObservableCollection<SharedClientScreen> _currentWindowClients;
 
-        /// <summary>
-        /// The current page that the server is viewing.
-        /// </summary>
+         
+        // The current page that the server is viewing.
+         
         private int _currentPage;
 
-        /// <summary>
-        /// The total number of pages.
-        /// </summary>
+         
+        // The total number of pages.
+         
         private int _totalPages;
 
-        /// <summary>
-        /// Whether the current page that the server is viewing is last page or not.
-        /// </summary>
+         
+        // Whether the current page that the server is viewing is last page or not.
+         
         private bool _isLastPage;
 
-        /// <summary>
-        /// The current number of rows of the grid displayed on the screen.
-        /// </summary>
+         
+        // The current number of rows of the grid displayed on the screen.
+         
         private int _currentPageRows;
 
-        /// <summary>
-        /// The current number of columns of the grid displayed on the screen.
-        /// </summary>
+         
+        // The current number of columns of the grid displayed on the screen.
+         
         private int _currentPageColumns;
 
-        /// <summary>
-        /// Whether the popup is open or not.
-        /// </summary>
+         
+        // Whether the popup is open or not.
+         
         private bool _isPopupOpen;
 
-        /// <summary>
-        /// The text to be displayed on the popup.
-        /// </summary>
+         
+        // The text to be displayed on the popup.
+         
         private string _popupText;
 
-        /// <summary>
-        /// The dispatcher operation returned from the calls to BeginInvoke.
-        /// </summary>
-        /// <remarks>
-        /// They are only required for unit tests.
-        /// </remarks>
+         
+        // The dispatcher operation returned from the calls to BeginInvoke.
+
         private DispatcherOperation? _updateViewOperation, _displayPopupOperation;
 
-        /// <summary>
-        /// Creates an instance of the "ScreenshareServerViewModel" which represents the
-        /// view model for screen sharing on the server side. It also instantiates the instance
-        /// of the underlying data model.
-        /// </summary>
-        /// <param name="isDebugging">
-        /// If we are in debugging mode.
-        /// </param>
+         
+        // Creates an instance of the "ScreenshareServerViewModel" which represents the
+        // view model for screen sharing on the server side. It also instantiates the instance
+        // of the underlying data model.
         protected ScreenshareServerViewModel(bool isDebugging)
         {
             // Get the instance of the underlying data model.
@@ -126,11 +119,11 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage("Successfully created an instance for the view model", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Destructor for the class that will perform some cleanup tasks.
-        /// This destructor will run only if the Dispose method does not get called.
-        /// It gives the class the opportunity to finalize.
-        /// </summary>
+         
+        // Destructor for the class that will perform some cleanup tasks.
+        // This destructor will run only if the Dispose method does not get called.
+        // It gives the class the opportunity to finalize.
+         
         ~ScreenshareServerViewModel()
         {
             // Do not re-create Dispose clean-up code here.
@@ -139,18 +132,15 @@ namespace ScreenShare.Server
             Dispose(disposing: false);
         }
 
-        /// <summary>
-        /// Property changed event raised when a property is changed on a component.
-        /// </summary>
+         
+        // Property changed event raised when a property is changed on a component.
+         
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        /// <summary>
-        /// Notifies that subscribers list has been changed.
-        /// This will happen when a client either starts or stops screen sharing.
-        /// </summary>
-        /// <param name="subscribers">
-        /// Updated list of clients.
-        /// </param>
+         
+        // Notifies that subscribers list has been changed.
+        // This will happen when a client either starts or stops screen sharing.
+
         public void OnSubscribersChanged(List<SharedClientScreen> subscribers)
         {
             Debug.Assert(subscribers != null, Utils.GetDebugMessage("Received null subscribers list"));
@@ -169,15 +159,9 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully updated the subscribers list", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Notifies that a client has started screen sharing.
-        /// </summary>
-        /// <param name="clientId">
-        /// Id of the client who started screen sharing.
-        /// </param>
-        /// <param name="clientName">
-        /// Name of the client who started screen sharing.
-        /// </param>
+         
+        // Notifies that a client has started screen sharing.
+
         public void OnScreenshareStart(string clientId, string clientName)
         {
             if (clientName == "") return;
@@ -186,15 +170,9 @@ namespace ScreenShare.Server
             DisplayPopup($"{clientName} has started screen sharing");
         }
 
-        /// <summary>
-        /// Notifies that a client has stopped screen sharing.
-        /// </summary>
-        /// <param name="clientId">
-        /// Id of the client who stopped screen sharing.
-        /// </param>
-        /// <param name="clientName">
-        /// Name of the client who stopped screen sharing.
-        /// </param>
+         
+        // Notifies that a client has stopped screen sharing.
+
         public void OnScreenshareStop(string clientId, string clientName)
         {
             if (clientName == "") return;
@@ -203,9 +181,9 @@ namespace ScreenShare.Server
             DisplayPopup($"{clientName} has stopped screen sharing");
         }
 
-        /// <summary>
-        /// Implement "IDisposable". Disposes the managed and unmanaged resources.
-        /// </summary>
+         
+        // Implement "IDisposable". Disposes the managed and unmanaged resources.
+         
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -225,16 +203,16 @@ namespace ScreenShare.Server
         public static int InitialNumberOfCols { get; } = 1;
         public static bool InitialIsLastPage { get; } = true;
 
-        /// <summary>
-        /// Gets the maximum number of tiles of the shared screens
-        /// on a single page that will be shown to the server.
-        /// </summary>
+         
+        // Gets the maximum number of tiles of the shared screens
+        // on a single page that will be shown to the server.
+         
         public static int MaxTiles { get; } = 9;
 
-        /// <summary>
-        /// Acts as a map from the number of screens on the current window to
-        /// the number of rows and columns of the grid displayed on the screen.
-        /// </summary>
+         
+        // Acts as a map from the number of screens on the current window to
+        // the number of rows and columns of the grid displayed on the screen.
+         
         public static List<(int Row, int Column)> NumRowsColumns { get; } = new()
         {
             (1, 1),  // 0 Total Screen.
@@ -249,9 +227,9 @@ namespace ScreenShare.Server
             (3, 3)   // 9 Total Screens.
         };
 
-        /// <summary>
-        /// Gets the clients which are on the current page.
-        /// </summary>
+         
+        // Gets the clients which are on the current page.
+         
         public ObservableCollection<SharedClientScreen> CurrentWindowClients
         {
             get => _currentWindowClients;
@@ -270,9 +248,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the current page that the server is viewing.
-        /// </summary>
+         
+        // Gets the current page that the server is viewing.
+         
         public int CurrentPage
         {
             get => _currentPage;
@@ -287,9 +265,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the total number of pages.
-        /// </summary>
+         
+        // Gets the total number of pages.
+         
         public int TotalPages
         {
             get => _totalPages;
@@ -304,9 +282,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets whether the current page that the server is viewing is last page or not.
-        /// </summary>
+         
+        // Gets whether the current page that the server is viewing is last page or not.
+         
         public bool IsLastPage
         {
             get => _isLastPage;
@@ -321,9 +299,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the current number of rows of the grid displayed on the screen.
-        /// </summary>
+         
+        // Gets the current number of rows of the grid displayed on the screen.
+         
         public int CurrentPageRows
         {
             get => _currentPageRows;
@@ -338,9 +316,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the current number of columns of the grid displayed on the screen.
-        /// </summary>
+         
+        // Gets the current number of columns of the grid displayed on the screen.
+         
         public int CurrentPageColumns
         {
             get => _currentPageColumns;
@@ -355,9 +333,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets whether the popup is open or not.
-        /// </summary>
+         
+        // Gets whether the popup is open or not.
+         
         public bool IsPopupOpen
         {
             get => _isPopupOpen;
@@ -373,9 +351,9 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the text to be displayed on the popup.
-        /// </summary>
+         
+        // Gets the text to be displayed on the popup.
+         
         public string PopupText
         {
             get => _popupText;
@@ -390,25 +368,19 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Gets the dispatcher to the main thread. In case it is not available
-        /// (such as during unit testing) the dispatcher associated with the
-        /// current thread is returned.
-        /// </summary>
+         
+        // Gets the dispatcher to the main thread. In case it is not available
+        // (such as during unit testing) the dispatcher associated with the
+        // current thread is returned.
+         
         public static Dispatcher ApplicationMainThreadDispatcher =>
             (System.Windows.Application.Current?.Dispatcher != null) ?
                     System.Windows.Application.Current.Dispatcher :
                     Dispatcher.CurrentDispatcher;
 
-        /// <summary>
-        /// Gets a singleton instance of "ScreenshareServerViewModel" class.
-        /// </summary>
-        /// <param name="isDebugging">
-        /// If we are in debugging mode.
-        /// </param>
-        /// <returns>
-        /// A singleton instance of "ScreenshareServerViewModel".
-        /// </returns>
+         
+        // Gets a singleton instance of "ScreenshareServerViewModel" class.
+
         public static ScreenshareServerViewModel GetInstance(bool isDebugging = false)
         {
             // Create a new instance if it was null before.
@@ -416,14 +388,11 @@ namespace ScreenShare.Server
             return _instance;
         }
 
-        /// <summary>
-        /// Recomputes current window clients using the pagination logic
-        /// and notifies the UX. It also notifies the old and new clients
-        /// about the new status of sending image packets.
-        /// </summary>
-        /// <param name="newPageNum">
-        /// The new page number for which the current window clients should be recomputed.
-        /// </param>
+         
+        // Recomputes current window clients using the pagination logic
+        // and notifies the UX. It also notifies the old and new clients
+        // about the new status of sending image packets.
+
         public void RecomputeCurrentWindowClients(int newPageNum)
         {
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
@@ -509,12 +478,8 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully recomputed current window clients for the page {this.CurrentPage}", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Mark the client as pinned and switch to the page of that client.
-        /// </summary>
-        /// <param name="clientId">
-        /// Id of the client which is marked as pinned.
-        /// </param>
+         
+        // Mark the client as pinned and switch to the page of that client.
         public void OnPin(string clientId)
         {
             Debug.Assert(clientId != null, Utils.GetDebugMessage("Received null client id"));
@@ -556,12 +521,9 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully pinned the client with id: {clientId}", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Mark the client as pinned and switch to the previous (or the first) page.
-        /// </summary>
-        /// <param name="clientId">
-        /// Id of the client which is marked as unpinned.
-        /// </param>
+         
+        // Mark the client as pinned and switch to the previous (or the first) page.
+
         public void OnUnpin(string clientId)
         {
             Debug.Assert(clientId != null, Utils.GetDebugMessage("Received null client id"));
@@ -598,18 +560,15 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully unpinned the client with id: {clientId}", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// It executes in two distinct scenarios.
-        /// If disposing equals true, the method has been called directly
-        /// or indirectly by a user's code. Managed and unmanaged resources
-        /// can be disposed.
-        /// If disposing equals false, the method has been called by the
-        /// runtime from inside the destructor and we should not reference
-        /// other objects. Only unmanaged resources can be disposed.
-        /// </summary>
-        /// <param name="disposing">
-        /// Indicates if we are disposing this object.
-        /// </param>
+         
+        // It executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the destructor and we should not reference
+        // other objects. Only unmanaged resources can be disposed.
+
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
@@ -630,16 +589,9 @@ namespace ScreenShare.Server
             _disposed = true;
         }
 
-        /// <summary>
-        /// Moves the subscribers marked as pinned to the front of the list
-        /// keeping the lexicographical order of their name.
-        /// </summary>
-        /// <param name="subscribers">
-        /// Input list of subscribers.
-        /// </param>
-        /// <returns>
-        /// List of subscribers with pinned subscribers in front.
-        /// </returns>
+         
+        // Moves the subscribers marked as pinned to the front of the list
+        // keeping the lexicographical order of their name.
         private static List<SharedClientScreen> MovePinnedSubscribers(List<SharedClientScreen> subscribers)
         {
             Debug.Assert(subscribers != null, Utils.GetDebugMessage("Received null subscribers list"));
@@ -664,17 +616,11 @@ namespace ScreenShare.Server
             return pinnedSubscribers.Concat(unpinnedSubscribers).ToList();
         }
 
-        /// <summary>
-        /// Rearranges the subscribers list by first having the Pinned subscribers followed by
-        /// the unpinned subscribers. The pinned and unpinned subscribers are kept in the
-        /// lexicographical order of their names.
-        /// </summary>
-        /// <param name="subscribers">
-        /// The subscribers list to rearrange.
-        /// </param>
-        /// <returns>
-        /// The rearranged subscribers list.
-        /// </returns>
+         
+        // Rearranges the subscribers list by first having the Pinned subscribers followed by
+        // the unpinned subscribers. The pinned and unpinned subscribers are kept in the
+        // lexicographical order of their names.
+
         private static List<SharedClientScreen> RearrangeSubscribers(List<SharedClientScreen> subscribers)
         {
             // Sort the subscribers in lexicographical order of their name.
@@ -687,19 +633,9 @@ namespace ScreenShare.Server
             return MovePinnedSubscribers(sortedSubscribers);
         }
 
-        /// <summary>
-        /// Gets the tile dimensions in the grid displayed on the screen
-        /// based on the number of rows and columns presented.
-        /// </summary>
-        /// <param name="rows">
-        /// Number of rows of the grid on the screen.
-        /// </param>
-        /// <param name="columns">
-        /// Number of columns of the grid on the screen.
-        /// </param>
-        /// <returns>
-        /// A tuple having the height and width of the each grid tile.
-        /// </returns>
+         
+        // Gets the tile dimensions in the grid displayed on the screen
+        // based on the number of rows and columns presented.
         private static (int Height, int Width) GetTileDimensions(int rows, int columns)
         {
             // Get the total system height and width.
@@ -721,12 +657,9 @@ namespace ScreenShare.Server
             return (tileHeight, tileWidth);
         }
 
-        /// <summary>
-        /// Starts the processing task for the clients.
-        /// </summary>
-        /// <param name="clients">
-        /// The clients for which the processing task needs to be started.
-        /// </param>
+         
+        // Starts the processing task for the clients.
+
         private static void StartProcessingForClients(List<SharedClientScreen> clients)
         {
             try
@@ -783,12 +716,8 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Stops the processing task for the clients.
-        /// </summary>
-        /// <param name="clients">
-        /// The clients for which the processing task needs to be stopped.
-        /// </param>
+         
+        // Stops the processing task for the clients.
         private static void StopProcessingForClients(List<SharedClientScreen> clients)
         {
             foreach (SharedClientScreen client in clients)
@@ -806,19 +735,10 @@ namespace ScreenShare.Server
             }
         }
 
-        /// <summary>
-        /// Notify the previous/new window clients to stop/send their image packets.
-        /// It also asks the previous/new window clients to stop/start their image processing.
-        /// </summary>
-        /// <param name="prevWindowClients">
-        /// List of clients which were there in the previous window.
-        /// </param>
-        /// <param name="currentWindowClients">
-        /// List of clients which are there in the current window.
-        /// </param>
-        /// <param name="numRowsColumns">
-        /// Number of rows and columns for the resolution of the image to be sent by the current window clients.
-        /// </param>
+         
+        // Notify the previous/new window clients to stop/send their image packets.
+        // It also asks the previous/new window clients to stop/start their image processing.
+
         private void NotifySubscribers(List<SharedClientScreen> prevWindowClients, List<SharedClientScreen> currentWindowClients, (int, int) numRowsColumns)
         {
             Debug.Assert(_model != null, Utils.GetDebugMessage("_model is found null"));
@@ -846,30 +766,8 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage("Successfully notified the previous window clients", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Updates the view with the new values provided.
-        /// </summary>
-        /// <param name="newWindowClients">
-        /// The new current window clients.
-        /// </param>
-        /// <param name="newPageNum">
-        /// The new page number.
-        /// </param>
-        /// <param name="newNumRows">
-        /// The new number of grid rows on the new page.
-        /// </param>
-        /// <param name="newNumCols">
-        /// The new number of grid columns on the new page.
-        /// </param>
-        /// <param name="newTotalPages">
-        /// The new total number of pages.
-        /// </param>
-        /// <param name="newIsLastPage">
-        /// If the new page is last page or not.
-        /// </param>
-        /// <param name="newTileDimensions">
-        /// The new tile dimension of each grid cell on the new page.
-        /// </param>
+         
+        // Updates the view with the new values provided.
         private void UpdateView(
             List<SharedClientScreen> newWindowClients,
             int newPageNum,
@@ -913,12 +811,8 @@ namespace ScreenShare.Server
             );
         }
 
-        /// <summary>
-        /// Used to display the popup on the UI with the given message.
-        /// </summary>
-        /// <param name="message">
-        /// Message to be displayed on the popup.
-        /// </param>
+         
+        // Used to display the popup on the UI with the given message.
         private void DisplayPopup(string message)
         {
             _displayPopupOperation = ApplicationMainThreadDispatcher.BeginInvoke(
@@ -938,15 +832,8 @@ namespace ScreenShare.Server
             );
         }
 
-        /// <summary>
-        /// Computes the number of subscribers to skip up to current page.
-        /// </summary>
-        /// <param name="currentPageNum">
-        /// The current page number the server is viewing.
-        /// </param>
-        /// <returns>
-        /// Returns the number of subscribers to skip up to the current page.
-        /// </returns>
+         
+        // Computes the number of subscribers to skip up to current page.
         private int GetCountToSkip(int currentPageNum)
         {
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
@@ -972,15 +859,8 @@ namespace ScreenShare.Server
             return countToSkip;
         }
 
-        /// <summary>
-        /// Compute the page of the client on which the client screen is displayed.
-        /// </summary>
-        /// <param name="clientId">
-        /// The client Id whose page is to be found.
-        /// </param>
-        /// <returns>
-        /// The page number of the client on which it's screen is displayed.
-        /// </returns>
+         
+        // Compute the page of the client on which the client screen is displayed.
         private int GetClientPage(string clientId)
         {
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
@@ -1030,12 +910,8 @@ namespace ScreenShare.Server
             return 1;
         }
 
-        /// <summary>
-        /// Gets the total number of pages formed in screen share view.
-        /// </summary>
-        /// <returns>
-        /// Returns the total number of pages formed.
-        /// </returns>
+         
+        // Gets the total number of pages formed in screen share view.
         private int GetTotalPages()
         {
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
@@ -1074,12 +950,8 @@ namespace ScreenShare.Server
             return pageNum;
         }
 
-        /// <summary>
-        /// Handles the property changed event raised on a component.
-        /// </summary>
-        /// <param name="property">
-        /// The name of the property that is changed.
-        /// </param>
+         
+        // Handles the property changed event raised on a component.
         private void OnPropertyChanged(string property)
         {
             PropertyChanged?.Invoke(this, new(property));

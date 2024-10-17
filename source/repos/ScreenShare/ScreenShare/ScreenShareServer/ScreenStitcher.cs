@@ -1,9 +1,4 @@
-﻿///<summary>
-///This file contains the ScreenStitcher Class that implements the
-///screen stitching functionality. It is used by ScreenshareServer.
-///</summary>
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -14,41 +9,40 @@ using System.Threading.Tasks;
 
 namespace ScreenShare.Server
 {
-    /// <summary>
-    /// Class contains implementation of the screen stitching using threads (tasks)
-    /// </summary>
+     
+    // Class contains implementation of the screen stitching using threads (tasks)
+     
     public class ScreenStitcher
     {
-        /// <summary>
-        /// SharedClientScreen object.
-        /// </summary>
+         
+        // SharedClientScreen object.
+         
         private readonly SharedClientScreen _sharedClientScreen;
 
-        /// <summary>
-        /// Thread to run stitcher.
-        /// </summary>
+         
+        // Thread to run stitcher.
+         
         private Task? _stitchTask;
 
-        /// <summary>
-        /// A private variable to store old image.
-        /// </summary>
+         
+        // A private variable to store old image.
+         
         private Bitmap? _oldImage;
 
-        /// <summary>
-        /// Old resolution of the image.
-        /// </summary>
+         
+        // Old resolution of the image.
+         
         private Resolution? _resolution;
 
-        /// <summary>
-        /// A count to maintain the number of image stitched. Used in
-        /// trace logs.
-        /// </summary>
+         
+        // A count to maintain the number of image stitched. Used in
+        // trace logs.
+         
         private int _cnt = 0;
 
-        /// <summary>
-        /// Constructor for ScreenSticher.
-        /// </summary>
-        /// <param name="scs"></param>
+         
+        // Constructor for ScreenSticher.
+         
         public ScreenStitcher(SharedClientScreen scs)
         {
             _oldImage = null;
@@ -57,14 +51,10 @@ namespace ScreenShare.Server
             _sharedClientScreen = scs;
         }
 
-        /// <summary>
-        /// Uses the 'diff' image curr and the previous image to find the
-        /// current image. This method is used when the client sends a diff
-        /// instead of entire image to server.
-        /// </summary>
-        /// <param name="curr">The 'diff' current image</param>
-        /// <param name="prev">Previous image</param>
-        /// <returns>Current image meant to be displayed</returns>
+         
+        // Uses the 'diff' image curr and the previous image to find the
+        // current image. This method is used when the client sends a diff
+        // instead of entire image to server.
         public static unsafe Bitmap Process(Bitmap curr, Bitmap prev)
         {
             BitmapData currData = curr.LockBits(new Rectangle(0, 0, curr.Width, curr.Height), ImageLockMode.ReadWrite, curr.PixelFormat);
@@ -111,11 +101,8 @@ namespace ScreenShare.Server
             return newb;
         }
 
-        /// <summary>
-        /// Method to decompress a byte array compressed by processor.
-        /// </summary>
-        /// <param name="data">Byte array compressed using DeflateStream</param>
-        /// <returns>Decompressed byte array</returns>
+         
+        // Method to decompress a byte array compressed by processor.
         public static byte[] DecompressByteArray(byte[] data)
         {
             MemoryStream input = new(data);
@@ -127,14 +114,10 @@ namespace ScreenShare.Server
             return output.ToArray();
         }
 
-        /// <summary>
-        /// Creates(if not exist) and start the task `_stitchTask`
-        /// Will read the image using `_sharedClientScreen.GetFrame`
-        /// and puts the final image using `_sharedClientScreen.PutFinalImage`.
-        /// </summary>
-        /// <param name="taskId">
-        /// Id of the task in which this function is called.
-        /// </param>
+         
+        // Creates(if not exist) and start the task `_stitchTask`
+        // Will read the image using `_sharedClientScreen.GetFrame`
+        // and puts the final image using `_sharedClientScreen.PutFinalImage`.
         public void StartStitching(int taskId)
         {
             if (_stitchTask != null) return;
@@ -165,9 +148,9 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully created the stitching task with id {taskId} for the client with id {_sharedClientScreen.Id}", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Method to stop the stitcher task.
-        /// </summary>
+         
+        // Method to stop the stitcher task.
+         
         public void StopStitching()
         {
             if (_stitchTask == null) return;
@@ -187,16 +170,13 @@ namespace ScreenShare.Server
             Trace.WriteLine(Utils.GetDebugMessage($"Successfully stopped the processing task for the client with id {_sharedClientScreen.Id}", withTimeStamp: true));
         }
 
-        /// <summary>
-        /// Function to stitch new frame over old image. If the data sent from client
-        /// has '1' in front then it is a complete image and hence the Process function
-        /// is not used. Otherwise, the data will have a '0' in front of it and we will
-        /// have to compute the XOR (using process function) in order to find the current
-        /// image.
-        /// </summary>
-        /// <param name="oldImage"></param>
-        /// <param name="newFrame"></param>
-        /// <returns>New image after stitching</returns>
+         
+        // Function to stitch new frame over old image. If the data sent from client
+        // has '1' in front then it is a complete image and hence the Process function
+        // is not used. Otherwise, the data will have a '0' in front of it and we will
+        // have to compute the XOR (using process function) in order to find the current
+        // image.
+         
         private Bitmap Stitch(Bitmap? oldImage, string newFrame)
         {
 
