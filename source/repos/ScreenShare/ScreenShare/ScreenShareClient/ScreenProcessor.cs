@@ -23,7 +23,7 @@ namespace ScreenShare.Client
         private Task? _processorTask;
 
         // Limits the number of frames in the queue
-        public const short MaxQueueLength = 20;
+        public const short MaxQueueLength = 40;
 
         // The screen capturer object
         private readonly ScreenCapturer _capturer;
