@@ -16,7 +16,7 @@ namespace ScreenShare.Client
         readonly Queue<Bitmap> _capturedFrame;
 
         // Limits the number of frames in the queue
-        public const short MaxQueueLength = 20;
+        public const short MaxQueueLength = 40;
 
         // Token and its source for killing the task
         private bool _cancellationToken;
