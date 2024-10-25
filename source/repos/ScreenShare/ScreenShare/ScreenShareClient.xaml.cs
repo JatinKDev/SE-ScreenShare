@@ -27,9 +27,10 @@ namespace ScreenShare
             this.DataContext = viewModel;
         }
 
+       
         // This function is triggered when the user clicks on the Stop Screen Share Button 
         // It sets the value of SharingScreen boolean to false as screen is not being shared 
-      
+
         public void OnStopButtonClicked(object sender, RoutedEventArgs e)
         {
             if (this.DataContext is ScreenshareClientViewModel viewModel)

@@ -23,7 +23,7 @@ namespace ScreenShare
     {
         public ScreenShareServer()
         {
-            InitializeComponent();
+            //itializeComponent();
             ScreenshareServerViewModel viewModel = ScreenshareServerViewModel.GetInstance();
             this.DataContext = viewModel;
 

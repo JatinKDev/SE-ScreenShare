@@ -3,7 +3,6 @@
 // the server view model and used by the server data model to notify view model.
  
 
-using ScreenShare.ScreenShareServer;
 using System.Collections.Generic;
 
 namespace ScreenShare.Server
