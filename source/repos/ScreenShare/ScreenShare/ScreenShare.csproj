@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Page Remove="ScreenShareServer.xaml" />
+    <None Remove="ScreenShareAssets\NextPageButton.png" />
+    <None Remove="ScreenShareAssets\PreviousPageButton.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\SoftwareEngineering2024\Network\Network.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ScreenShareAssets\NextPageButton.png" />
+    <Resource Include="ScreenShareAssets\PreviousPageButton.png" />
   </ItemGroup>
 
 </Project>

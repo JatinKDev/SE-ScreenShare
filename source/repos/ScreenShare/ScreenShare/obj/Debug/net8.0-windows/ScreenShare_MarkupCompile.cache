@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 
-11460857716
+2702482071
 
 21593886417
 203-1040075194
-ScreenShareClient.xaml;
+ScreenShareClient.xaml;ScreenShareServer.xaml;
 
 False
 

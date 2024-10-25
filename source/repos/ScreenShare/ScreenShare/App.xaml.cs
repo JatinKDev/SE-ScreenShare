@@ -14,7 +14,7 @@ namespace ScreenShare
         {
             var app = new App();
             var mainWindowClient = new Window(); // Create a new window
-            var screenShareClientPage = new ScreenShareClient(); // Create an instance of your ScreenShareClient page
+            var screenShareClientPage = new ScreenShareServer(); // Create an instance of your ScreenShareClient page
             mainWindowClient.Content = screenShareClientPage; // Set the content of the window to be the ScreenShareClient page
             mainWindowClient.Title = "Screen Share Client"; // Set a title for the window (optional)
 
