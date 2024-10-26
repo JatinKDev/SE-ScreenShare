@@ -17,8 +17,9 @@ using System.Windows.Shapes;
 
 namespace ScreenShare
 {
-    // Interaction logic for ScreenShareServer.xaml
-
+    /// <summary>
+    /// Interaction logic for ScreenShareServer.xaml
+    /// </summary>
     public partial class ScreenShareServer : Page
     {
         public ScreenShareServer()
@@ -31,11 +32,6 @@ namespace ScreenShare
 
             Debug.WriteLine(viewModel.CurrentWindowClients.Count);
         }
-
-
-
-        // This function increases the current page number by 1
-        // If on the last page, next page button is not accessible and so is this function 
 
         private void OnNextPageButtonClicked(object sender, RoutedEventArgs e)
         {

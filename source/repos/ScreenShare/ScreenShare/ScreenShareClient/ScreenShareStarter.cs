@@ -32,8 +32,8 @@ namespace ScreenShare.Client
         private readonly ScreenProcessor _processor;
 
         // Name and Id of the current client user
-        private string? _name;
-        private string? _id;
+        private string? _name = "shivanand";
+        private string? _id = "1";
 
         // Tokens added to be able to stop the thread execution
         private bool _confirmationCancellationToken;
@@ -126,7 +126,7 @@ namespace ScreenShare.Client
         {
             // Start the timer.
             _timer.Enabled = true;
-
+            
             Debug.Assert(_id != null, Utils.GetDebugMessage("_id property found null"));
             Debug.Assert(_name != null, Utils.GetDebugMessage("_name property found null"));
 

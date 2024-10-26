@@ -16,5 +16,5 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 203-1040075194
 ScreenShareClient.xaml;ScreenShareServer.xaml;
 
-False
+True
 
