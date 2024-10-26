@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScreenShare;
+using ScreenShare.Client;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace ScreenShare.Client
 {
-     
-    // Class contains implementation of the screen processing using threads (tasks)
-     
+    
+    /// Class contains implementation of the screen processing using threads (tasks)
+    
     public class ScreenProcessor
     {
         // The queue in which the image will be enqueued after
         // processing it
-        private readonly Queue<string> _processedFrame;
+        private readonly Queue<(string, List<PixelDifference>)> _processedFrame;
 
         // Processing task
         private Task? _processorTask;
@@ -46,24 +48,24 @@ namespace ScreenShare.Client
         // Stores whether diff image is being sent for the first time or not
         private int _first_xor = 0;
 
-         
-        // Called by ScreenshareClient.
-        // Initializes queue, oldRes, newRes, cancellation token and the previous image.
-         
+        
+        /// Called by ScreenshareClient.
+        /// Initializes queue, oldRes, newRes, cancellation token and the previous image.
+        
         public ScreenProcessor(ScreenCapturer Capturer)
         {
             _capturer = Capturer;
-            _processedFrame = new Queue<string>();
+            _processedFrame = new Queue<(string, List<PixelDifference>)>();
             ResolutionLock = new();
 
             Trace.WriteLine(Utils.GetDebugMessage("Successfully created an instance of ScreenProcessor", withTimeStamp: true));
         }
 
-         
-        // Pops and return the image from the queue. If there is no image in the queue then it waits for 
-        // the queue to become not empty
-         
-        public string GetFrame(ref bool cancellationToken)
+        
+        /// Pops and return the image from the queue. If there is no image in the queue then it waits for 
+        /// the queue to become not empty
+        
+        public (string, List<PixelDifference>) GetFrame(ref bool cancellationToken)
         {
             while (true)
             {
@@ -76,7 +78,7 @@ namespace ScreenShare.Client
                 }
 
                 if (cancellationToken)
-                    return "";
+                    return ("", null);
                 Thread.Sleep(100);
             }
             lock (_processedFrame)
@@ -86,9 +88,9 @@ namespace ScreenShare.Client
             }
         }
 
-         
-        // Returns the length of the processed image queue 
-         
+        
+        /// Returns the length of the processed image queue 
+        
         public int GetProcessedFrameLength()
         {
             lock (_processedFrame)
@@ -98,80 +100,74 @@ namespace ScreenShare.Client
             }
         }
 
-        // In this function we go through every pixel of both the images and
-        // returns a bitmap image which has xor of all the coorosponding pixels
-        public static unsafe Bitmap? Process(Bitmap curr, Bitmap prev)
+        
+        /// In this function we go through every pixel of both the images and
+        /// returns a bitmap image which has xor of all the coorosponding pixels
+        
+        public static unsafe List<PixelDifference>? Process(Bitmap curr, Bitmap prev)
         {
-            // taking lock on the images and extracting bitmap data
-            BitmapData currData = curr.LockBits(new Rectangle(0, 0, curr.Width, curr.Height), ImageLockMode.ReadWrite, curr.PixelFormat);
-            BitmapData prevData = prev.LockBits(new Rectangle(0, 0, prev.Width, prev.Height), ImageLockMode.ReadWrite, prev.PixelFormat);
+
+
+            // Lock the images and extract bitmap data
+            BitmapData currData = curr.LockBits(new Rectangle(0, 0, curr.Width, curr.Height), ImageLockMode.ReadOnly, curr.PixelFormat);
+            BitmapData prevData = prev.LockBits(new Rectangle(0, 0, prev.Width, prev.Height), ImageLockMode.ReadOnly, prev.PixelFormat);
 
             int bytesPerPixel = Bitmap.GetPixelFormatSize(curr.PixelFormat) / 8;
             int heightInPixels = currData.Height;
             int widthInBytes = currData.Width * bytesPerPixel;
 
-            // taking pointer to both the image bytes
-            byte* currptr = (byte*)currData.Scan0;
-            byte* prevptr = (byte*)prevData.Scan0;
+            // Take pointer to both the image bytes
+            byte* currPtr = (byte*)currData.Scan0;
+            byte* prevPtr = (byte*)prevData.Scan0;
 
-            // initializing the resultant bitmap image
-            Bitmap newb = new Bitmap(curr.Width, curr.Height);
-            BitmapData bmd = newb.LockBits(new Rectangle(0, 0, 10, 10), System.Drawing.Imaging.ImageLockMode.ReadOnly, newb.PixelFormat);
-            byte* ptr = (byte*)bmd.Scan0;
+            // Initialize the list of pixel differences
+            List<PixelDifference> changes = new List<PixelDifference>();
+            int diffCount = 0;
 
-            int diff = 0;
-
-            // iterating over both the images
+            // Iterate over both images
             for (int y = 0; y < heightInPixels; y++)
             {
-                int currentLine = y * currData.Stride;
+                byte* currRow = currPtr + (y * currData.Stride);
+                byte* prevRow = prevPtr + (y * prevData.Stride);
 
                 for (int x = 0; x < widthInBytes; x += bytesPerPixel)
                 {
-                    int oldBlue = currptr[currentLine + x];
-                    int oldGreen = currptr[currentLine + x + 1];
-                    int oldRed = currptr[currentLine + x + 2];
-                    int oldAlpha = currptr[currentLine + x + 3];
+                    int oldBlue = prevRow[x];
+                    int oldGreen = prevRow[x + 1];
+                    int oldRed = prevRow[x + 2];
+                    int oldAlpha = bytesPerPixel == 4 ? prevRow[x + 3] : 255; // Check for alpha channel in 32-bit images
 
-                    int newBlue = prevptr[currentLine + x];
-                    int newGreen = prevptr[currentLine + x + 1];
-                    int newRed = prevptr[currentLine + x + 2];
-                    int newAlpha = prevptr[currentLine + x + 3];
+                    int newBlue = currRow[x];
+                    int newGreen = currRow[x + 1];
+                    int newRed = currRow[x + 2];
+                    int newAlpha = bytesPerPixel == 4 ? currRow[x + 3] : 255;
 
-                    // setting xor of coorosponding pixels in the resultant image
-                    ptr[currentLine + x] = (byte)(oldBlue ^ newBlue);
-                    ptr[currentLine + x + 1] = (byte)(oldGreen ^ newGreen);
-                    ptr[currentLine + x + 2] = (byte)(oldRed ^ newRed);
-                    ptr[currentLine + x + 3] = (byte)(oldAlpha ^ newAlpha);
-
-                    // if the pixels diff count is more than a certain value then return as this is not the 
-                    // optimized way of sending image
-                    if ((oldBlue != newBlue) || (oldGreen != newGreen) || (oldRed != newRed) || (oldAlpha != newAlpha))
+                    // Compare pixel values
+                    if (oldBlue != newBlue || oldGreen != newGreen || oldRed != newRed || oldAlpha != newAlpha)
                     {
-                        diff++;
-                        if (diff > 500)
+                        diffCount++;
+                        if (diffCount > 1000)
                         {
                             curr.UnlockBits(currData);
                             prev.UnlockBits(prevData);
-                            newb.UnlockBits(bmd);
                             return null;
                         }
+                        changes.Add(new PixelDifference((ushort)(x / bytesPerPixel), (ushort)y, (byte)newAlpha, (byte)newRed, (byte)newGreen, (byte)newBlue));
                     }
                 }
             }
 
-            // unlocking the images
+            // Unlock the bitmaps
             curr.UnlockBits(currData);
             prev.UnlockBits(prevData);
-            newb.UnlockBits(bmd);
 
-            return newb;
+            return changes;
         }
 
-         
-        // Main function which will run in loop and capture the image
-        // calculate the image bits differences and append it in the array
-         
+        
+        /// Main function which will run in loop and capture the image
+        /// calculate the image bits differences and append it in the array
+        
         private void Processing()
         {
             while (!_cancellationToken)
@@ -181,7 +177,7 @@ namespace ScreenShare.Client
                     break;
 
                 Debug.Assert(img != null, Utils.GetDebugMessage("img is null"));
-                string serialized_buffer = Compress(img);
+                (string, List<PixelDifference>) serialized_buffer = Compress(img);
 
                 lock (_processedFrame)
                 {
@@ -200,10 +196,10 @@ namespace ScreenShare.Client
             }
         }
 
-         
-        // Called by ScreenshareClient when the client starts screen sharing.
-        // Creates a task for the Processing function.
-         
+        
+        /// Called by ScreenshareClient when the client starts screen sharing.
+        /// Creates a task for the Processing function.
+        
         public void StartProcessing()
         {
             // dropping one frame to set the previous image value
@@ -246,11 +242,11 @@ namespace ScreenShare.Client
             }
         }
 
-         
-        // Called by ScreenshareClient when the client stops screen sharing
-        // kill the processor task and make the processor task variable null
-        // Empty the Queue.
-         
+        
+        /// Called by ScreenshareClient when the client stops screen sharing
+        /// kill the processor task and make the processor task variable null
+        /// Empty the Queue.
+        
         public void StopProcessing()
         {
             Debug.Assert(_processorTask != null, Utils.GetDebugMessage("_processorTask was null, cannot call cancel."));
@@ -271,9 +267,10 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage("Successfully stopped image processing", withTimeStamp: true));
         }
 
-         
-        // Setting new resolution for sending the image. 
-         
+        
+        /// Setting new resolution for sending the image. 
+        
+        /// <param name="res"> New resolution values </param>
         public void SetNewResolution(int windowCount)
         {
             Debug.Assert(windowCount != 0, Utils.GetDebugMessage("windowCount is found 0"));
@@ -292,10 +289,12 @@ namespace ScreenShare.Client
                 " variable", withTimeStamp: true));
         }
 
-         
-        // Compressing the image byte array data using Deflated stream. It provides
-        // a lossless compression.
         
+        /// Compressing the image byte array data using Deflated stream. It provides
+        /// a lossless compression.
+        
+        /// <param name="data">Image data to be compressed</param>
+        /// <returns>Compressed data</returns>
         public static byte[] CompressByteArray(byte[] data)
         {
             MemoryStream output = new();
@@ -306,13 +305,13 @@ namespace ScreenShare.Client
             return output.ToArray();
         }
 
-         
-        // Called by StartProcessing, if the image resolution has changed then set
-        // the new image resolution
-         
-        public string Compress(Bitmap img)
+        
+        /// Called by StartProcessing, if the image resolution has changed then set
+        /// the new image resolution
+        
+        public (string, List<PixelDifference>) Compress(Bitmap img)
         {
-            Bitmap? new_img = null;
+            List<PixelDifference>? new_img = null;
 
             lock (ResolutionLock)
             {
@@ -320,7 +319,8 @@ namespace ScreenShare.Client
                 // not null then process the image using the previous image
                 if (prevImage != null && _newRes == _currentRes)
                 {
-                    new_img = Process(img, prevImage);
+                    //new_img = Process(img, prevImage);
+                    new_img = null;
                 }
                 // else we need to update the current res with the new res and change the resolution
                 // of captured image to the new resolution
@@ -338,9 +338,10 @@ namespace ScreenShare.Client
             {
                 MemoryStream ms = new();
                 img.Save(ms, ImageFormat.Jpeg);
+                Trace.WriteLine(Utils.GetDebugMessage($"Height: {img.Height}, width: {img.Width} ", withTimeStamp: false));
                 var data = CompressByteArray(ms.ToArray());
                 _first_xor = 0;
-                return Convert.ToBase64String(data) + "1";
+                return (Convert.ToBase64String(data), new_img);
             }
             // else if processing was done then compress the processed image
             else
@@ -349,17 +350,16 @@ namespace ScreenShare.Client
                 {
                     MemoryStream ms = new();
                     img.Save(ms, ImageFormat.Bmp);
+                    Trace.WriteLine(Utils.GetDebugMessage($"Height: {img.Height}, width: {img.Width} ", withTimeStamp: false));
                     var data = CompressByteArray(ms.ToArray());
                     _first_xor = 1;
-                    return Convert.ToBase64String(data) + "1";
+                    return (Convert.ToBase64String(data), new_img);
                 }
 
                 else
                 {
-                    MemoryStream ms = new();
-                    new_img.Save(ms, ImageFormat.Bmp);
-                    var data = CompressByteArray(ms.ToArray());
-                    return Convert.ToBase64String(data) + "0";
+
+                    return ("", new_img);
                 }
             }
         }

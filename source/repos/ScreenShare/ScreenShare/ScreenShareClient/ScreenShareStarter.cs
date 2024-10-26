@@ -1,18 +1,19 @@
-﻿using Networking;
+﻿
 using Networking.Communication;
+using Networking;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 
-
 namespace ScreenShare.Client
 {
-     
-    // Class contains implementation of the ScreenshareClient which will
-    // take the processed images and send it to the server via networking module
-     
+    
+    /// Class contains implementation of the ScreenshareClient which will
+    /// take the processed images and send it to the server via networking module
+    
     public partial class ScreenshareClient : INotificationHandler
     {
 
@@ -41,27 +42,25 @@ namespace ScreenShare.Client
         // View model for screenshare client
         private ScreenshareClientViewModel _viewModel;
 
-         
-        // Timer object which keeps track of the time the CONFIRMATION packet
-        // was received last from the client to tell that the client is still
-        // presenting the screen.
-         
-        ///private readonly Timer? _timer;
+        
+        /// Timer object which keeps track of the time the CONFIRMATION packet
+        /// was received last from the client to tell that the client is still
+        /// presenting the screen.
+        
         private readonly System.Timers.Timer? _timer;
 
-
-         
-        // The timeout value in "milliseconds" defining the timeout for the timer in
-        // SharedClientScreen which represents the maximum time to wait for the arrival
-        // of the packet from the client with the CONFIRMATION header.
-         
+        
+        /// The timeout value in "milliseconds" defining the timeout for the timer in
+        /// SharedClientScreen which represents the maximum time to wait for the arrival
+        /// of the packet from the client with the CONFIRMATION header.
+        
         public static double Timeout { get; } = 20 * 1000;
 
-         
-        // Setting up the ScreenCapturer and ScreenProcessor Class
-        // Taking instance of communicator from communicator factory
-        // and subscribing to it.
-         
+        
+        /// Setting up the ScreenCapturer and ScreenProcessor Class
+        /// Taking instance of communicator from communicator factory
+        /// and subscribing to it.
+        
         private ScreenshareClient(bool isDebugging)
         {
             _capturer = new ScreenCapturer();
@@ -92,10 +91,10 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage("Successfully stopped image processing", withTimeStamp: true));
         }
 
-         
-        // On timeout stop screensharing and make the viewmodel's sharingscreen boolean
-        // value as false for letting viewmodel know that screenshare stopped
-         
+        
+        /// On timeout stop screensharing and make the viewmodel's sharingscreen boolean
+        /// value as false for letting viewmodel know that screenshare stopped
+        
         public void OnTimeOut()
         {
             StopScreensharing();
@@ -103,10 +102,10 @@ namespace ScreenShare.Client
             Trace.WriteLine(Utils.GetDebugMessage($"Timeout occurred", withTimeStamp: true));
         }
 
-         
-        // Gives an instance of ScreenshareClient class and that instance is always 
-        // the same i.e. singleton pattern.
-         
+        
+        /// Gives an instance of ScreenshareClient class and that instance is always 
+        /// the same i.e. singleton pattern.
+        
         public static ScreenshareClient GetInstance(ScreenshareClientViewModel viewModel = null, bool isDebugging = false)
         {
             if (_screenShareClient == null)
@@ -118,11 +117,11 @@ namespace ScreenShare.Client
             return _screenShareClient;
         }
 
-         
-        // When client clicks the screensharing button, this function gets executed
-        // It will send a register packet to the server and it will even start sending the
-        // confirmation packets to the sever
-         
+        
+        /// When client clicks the screensharing button, this function gets executed
+        /// It will send a register packet to the server and it will even start sending the
+        /// confirmation packets to the sever
+        
         public void StartScreensharing()
         {
             // Start the timer.
@@ -132,7 +131,7 @@ namespace ScreenShare.Client
             Debug.Assert(_name != null, Utils.GetDebugMessage("_name property found null"));
 
             // sending register packet
-            DataPacket dataPacket = new(_id, _name, ClientDataHeader.Register.ToString(), "");
+            DataPacket dataPacket = new(_id, _name, ClientDataHeader.Register.ToString(), "", false, false, null);
             string serializedData = JsonSerializer.Serialize(dataPacket);
             _communicator.Send(serializedData, Utils.ModuleIdentifier, null);
             Trace.WriteLine(Utils.GetDebugMessage("Successfully sent REGISTER packet to server"));
@@ -142,10 +141,12 @@ namespace ScreenShare.Client
 
         }
 
-         
-        // This function will be invoked on message from server
-        // If the message is SEND then start capturing, processing and sending functions
-        // Otherwise, if the message was STOP then just stop the image sending part        
+        
+        /// This function will be invoked on message from server
+        /// If the message is SEND then start capturing, processing and sending functions
+        /// Otherwise, if the message was STOP then just stop the image sending part
+        
+        /// <param name="serializedData"> Serialized data from the network module </param>
         public void OnDataReceived(string serializedData)
         {
             // Deserializing data packet received from server
@@ -187,69 +188,11 @@ namespace ScreenShare.Client
             }
         }
 
+
+
         
-
-        /*
-        public void OnDataReceived(string serializedData)
-        {
-            // Deserializing data packet received from server
-            Debug.Assert(serializedData != "", Utils.GetDebugMessage("Message from server found null", withTimeStamp: true));
-            DataPacket? dataPacket = JsonSerializer.Deserialize<DataPacket>(serializedData);
-            Debug.Assert(dataPacket != null, Utils.GetDebugMessage("Unable to deserialize DataPacket from server", withTimeStamp: true));
-            Trace.WriteLine(Utils.GetDebugMessage("Successfully received packet from server", withTimeStamp: true));
-
-            // Check for the header in the received DataPacket
-            if (dataPacket?.Header == ServerDataHeader.Send.ToString())
-            {
-                // If it is a SEND packet, start image sending (if not already started) and set resolution
-                Trace.WriteLine(Utils.GetDebugMessage("Got SEND packet from server", withTimeStamp: true));
-
-                // Starting capturer, processor, and image sending
-                StartImageSending();
-
-                // Check if full image is being sent or only the changed pixels
-                if (dataPacket.IsFull && dataPacket.Image != null)
-                {
-                    // Full image is being sent, so set the new image and its resolution
-                    int resolution = CalculateResolutionFromImage(dataPacket.Image);
-                    _processor.SetNewResolution(resolution);
-                    Trace.WriteLine(Utils.GetDebugMessage("Successfully set the new resolution from full image", withTimeStamp: true));
-                }
-                else if (dataPacket.IsChange && dataPacket.ChangedPixels != null)
-                {
-                    // Only changed pixels are sent, so apply changes
-                    ApplyPixelChanges(dataPacket.ChangedPixels);
-                    Trace.WriteLine(Utils.GetDebugMessage("Successfully applied pixel changes", withTimeStamp: true));
-                }
-                else
-                {
-                    Debug.Assert(false, Utils.GetDebugMessage("Invalid SEND packet: no image or pixel changes", withTimeStamp: true));
-                }
-            }
-            else if (dataPacket?.Header == ServerDataHeader.Stop.ToString())
-            {
-                // If it was a STOP packet, stop image sending
-                Trace.WriteLine(Utils.GetDebugMessage("Got STOP packet from server", withTimeStamp: true));
-                StopImageSending();
-            }
-            else if (dataPacket?.Header == ServerDataHeader.Confirmation.ToString())
-            {
-                // If it was a CONFIRMATION packet, update the timer to the max value
-                Trace.WriteLine(Utils.GetDebugMessage("Got CONFIRMATION packet from server", withTimeStamp: true));
-                UpdateTimer();
-            }
-            else
-            {
-                // Invalid packet header
-                Debug.Assert(false, Utils.GetDebugMessage("Header from server is neither SEND, STOP, nor CONFIRMATION", withTimeStamp: true));
-            }
-        } */
-
-
-
-         
-        // Resets the time of the timer object.
-         
+        /// Resets the time of the timer object.
+        
         public void UpdateTimer()
         {
             Debug.Assert(_timer != null, Utils.GetDebugMessage("_timer is found null"));
@@ -266,21 +209,35 @@ namespace ScreenShare.Client
             }
         }
 
-         
-        // Image sending function which will take image pixel diffs from processor and 
-        // send it to the server via the networking module. Images are sent only if there
-        // are any changes in pixels as compared to previous image.
-         
+        
+        /// Image sending function which will take image pixel diffs from processor and 
+        /// send it to the server via the networking module. Images are sent only if there
+        /// are any changes in pixels as compared to previous image.
+        
         private void ImageSending()
         {
 
             int cnt = 0;
             while (!_imageCancellationToken)
             {
-                string serializedImg = _processor.GetFrame(ref _imageCancellationToken);
+                (string, List<PixelDifference>) serializedImg = _processor.GetFrame(ref _imageCancellationToken);
                 if (_imageCancellationToken) break;
 
-                DataPacket dataPacket = new(_id, _name, ClientDataHeader.Image.ToString(), serializedImg);
+
+                DataPacket dataPacket;
+                if (serializedImg.Item1 == "")
+                {
+                    dataPacket = new(_id, _name, ClientDataHeader.Image.ToString(), serializedImg.Item1, false, false, serializedImg.Item2);
+
+                }
+                else
+                {
+
+                    dataPacket = new(_id, _name, ClientDataHeader.Image.ToString(), serializedImg.Item1, false, true, serializedImg.Item2);
+                }
+
+
+
                 string serializedData = JsonSerializer.Serialize(dataPacket);
 
                 Trace.WriteLine(Utils.GetDebugMessage($"Sent frame {cnt} of size {serializedData.Length}", withTimeStamp: true));
@@ -289,9 +246,9 @@ namespace ScreenShare.Client
             }
         }
 
-         
-        // Starting the image sending function on a thread.
-         
+        
+        /// Starting the image sending function on a thread.
+        
         private void StartImageSending()
         {
             _capturer.StartCapture();
