@@ -54,7 +54,7 @@ namespace ScreenShare.Client
         /// SharedClientScreen which represents the maximum time to wait for the arrival
         /// of the packet from the client with the CONFIRMATION header.
         
-        public static double Timeout { get; } = 20 * 1000;
+        public static double Timeout { get; } = 200 * 1000;
 
         
         /// Setting up the ScreenCapturer and ScreenProcessor Class
@@ -67,8 +67,9 @@ namespace ScreenShare.Client
             _processor = new ScreenProcessor(_capturer);
             if (!isDebugging)
             {
-                _communicator = CommunicationFactory.GetCommunicator();
+                _communicator = new CommunicatorClient();
                 _communicator.Subscribe(Utils.ModuleIdentifier, this, true);
+                _communicator.Start("10.32.10.185", "60620");
             }
 
             try

@@ -13,8 +13,6 @@ C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debu
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\SharpDX.Direct3D11.dll
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\SharpDX.DXGI.dll
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\System.Drawing.Common.dll
-C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\Network.dll
-C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\Network.pdb
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ScreenShare.csproj.AssemblyReference.cache
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ScreenShareClient.g.cs
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ScreenShare_MarkupCompile.cache
@@ -34,3 +32,5 @@ C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debu
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ref\ScreenShare.dll
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ScreenShareServer.g.cs
 C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\obj\Debug\net8.0-windows\ScreenShareServer.baml
+C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\Networking.dll
+C:\Users\hp\Desktop\SE-ScreenShare\source\repos\ScreenShare\ScreenShare\bin\Debug\net8.0-windows\Networking.pdb
