@@ -67,7 +67,7 @@ namespace ScreenShare.Client
             _processor = new ScreenProcessor(_capturer);
             if (!isDebugging)
             {
-                _communicator = new CommunicatorClient();
+                _communicator = CommunicationFactory.GetCommunicator(true);
                 _communicator.Subscribe(Utils.ModuleIdentifier, this, true);
                 _communicator.Start("10.32.10.185", "60620");
             }

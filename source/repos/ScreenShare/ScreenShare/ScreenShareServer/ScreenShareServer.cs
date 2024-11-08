@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Timers;
 using System.Net.Sockets;
+using Networking.Queues;
+using System.Net;
 
 namespace ScreenShare.Server
 {
@@ -56,10 +58,8 @@ namespace ScreenShare.Server
             if (!isDebugging)
             {
                 // Get an instance of a communicator object.
-                _communicator = new CommunicatorServer();
-
-                // Subscribe to the networking module for packets.
-                _communicator.Subscribe(Utils.ModuleIdentifier, this, isHighPriority: true);
+                _communicator = CommunicationFactory.GetCommunicator(false);
+                _communicator.Subscribe(Utils.ModuleIdentifier, this, true);
                 _communicator.Start();
             }
 
@@ -136,17 +136,62 @@ namespace ScreenShare.Server
             }
         }
 
-        
+
         /// Implements "INotificationHandler". Not required by the screen share server module.
-    
+
+        protected string GetAddressFromSocket(TcpClient socket, bool otherEnd = false)
+        {
+            IPEndPoint endPoint = null;
+            if (!otherEnd)
+            {
+                endPoint = (IPEndPoint?)socket.Client.LocalEndPoint;
+            }
+            else
+            {
+                endPoint = (IPEndPoint?)socket.Client.RemoteEndPoint;
+            }
+            if (endPoint == null)
+            {
+                return "";
+            }
+            string ipAddress = endPoint.Address.MapToIPv4().ToString();
+            string port = endPoint.Port.ToString();
+
+            // using underscores since apparently fileNames cannot have ':'
+            string address = GetConcatenatedAddress(ipAddress, port);
+            return address;
+        }
+
+        protected string GetConcatenatedAddress(string ipAddress, string port)
+        {
+            return $"{ipAddress}_{port}";
+        }
+
+
 #pragma warning disable CA1822 // Mark members as static.
-        public void OnClientJoined<T>(T _) { }
+        public void OnClientJoined(TcpClient socket) {
+            Trace.WriteLine("aeaeaeaeaeaeae");
+            string address = GetAddressFromSocket(socket, otherEnd: true);
+            Trace.WriteLine(address);
+            // _logger.Log($"Client Joined : {address}");
+            Console.WriteLine($"Client Joined : {address}");
+            /*  lock (_syncLock)
+              {
+                  _clientDictionary.Add(address, socket);
+              }*/
+            string serverIP = address.Split('_')[0];
+            string serverPort = address.Split('_')[1];
+            _communicator.AddClient(serverIP, socket);
+            
+          //  _fileReceiverServer.AddClient($"{serverIP}:{serverPort}", socket);
+
+        }
 #pragma warning restore CA1822 // Mark members as static.
 
-        
+
         /// Implements "INotificationHandler". It is invoked by the Networking Communicator
         /// when a client leaves the meeting.
-        
+
         public void OnClientLeft(string clientId)
         {
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
@@ -304,6 +349,7 @@ namespace ScreenShare.Server
             Debug.Assert(_subscribers != null, Utils.GetDebugMessage("_subscribers is found null"));
             
             // Acquire lock because timer threads could also execute simultaneously.
+           
             lock (_subscribers)
             {
                 // Check if the clientId is present in the screen sharers list.
