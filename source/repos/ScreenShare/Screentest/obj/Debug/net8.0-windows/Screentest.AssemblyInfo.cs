@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Screentest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+86ecd6673715e1cc87a921b4d6f791e830c06dae")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0cefc221ccb770e37bebc4a700fc135db35deeb5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Screentest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Screentest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
