@@ -32,8 +32,8 @@ namespace ScreenShare.Client
         private readonly ScreenProcessor _processor;
 
         // Name and Id of the current client user
-        private string? _name = "jatin";
-        private string? _id = "192.168.100.227";
+        private string? _name = "";
+        private string? _id = "";
 
         // Tokens added to be able to stop the thread execution
         private bool _confirmationCancellationToken;
@@ -69,7 +69,7 @@ namespace ScreenShare.Client
             {
                 _communicator = CommunicationFactory.GetCommunicator(true);
                 _communicator.Subscribe(Utils.ModuleIdentifier, this, true);
-                _communicator.Start("192.168.100.227", "60620");
+                _communicator.Start("192.168.100.227", "56264");
             }
 
             try
@@ -116,6 +116,11 @@ namespace ScreenShare.Client
             _screenShareClient._viewModel = viewModel;
             Trace.WriteLine(Utils.GetDebugMessage("Successfully created an instance of ScreenshareClient", withTimeStamp: true));
             return _screenShareClient;
+        }
+        public void SetUserDetails(string username , string id)
+        {
+            _name = username;
+            _id = id;
         }
 
         
